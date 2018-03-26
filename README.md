@@ -13,6 +13,7 @@ This repository use KNN algorithm provided in OpenCV 3.2 to detect printed numbe
     - In ideal cases, the accuracy is near 100%.
 
 ### Some Details
+
     - Use 'alter' to in void_main.cpp to detect black digits on white paper or red LED digits on black board.
     
     - Threshold parameters can be adjusted in Digit_Finder.h for different scenes.
