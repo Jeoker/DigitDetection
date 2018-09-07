@@ -12,8 +12,12 @@ This repository use KNN algorithm provided in OpenCV 3.2 to detect printed numbe
 - In ideal cases, the accuracy is near 100%.
 
 ### Some Details
-- Use `alter` in main.cpp to detect black digits on white paper or red LED digits on black board.
+- Use `alter` in find_main.cpp to detect black digits on white paper or red LED digits on black board.
 - Threshold parameters can be adjusted in Digit_Finder.h for different light environment.
 - This software takes only the first digit on the left side if several digits are detected.
 - It will only confirm the result when a digit is cognized for 8 times continuously.
 - The software will quit when 10 digits are detected.
+
+## TODO
+ - I want to merage the rotating, training and detection all in one main file.
+ - in later OpenCV version, the program may not work well, I will test it when get time.
