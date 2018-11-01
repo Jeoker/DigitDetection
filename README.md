@@ -1,9 +1,9 @@
 # Description: Digit Recognition
 ### Algorithm: KNN
 ### Library: OpenCV
-### Total line count (main.cpp excluded): 610
 
 This repository use KNN algorithm provided in OpenCV 3.2 to detect printed numbers.
+Total line count: 812.
 
 ### Training set:
 - I used 60 different fonts provided by Microsoft Word as input to train the software.
