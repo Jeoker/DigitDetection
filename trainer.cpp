@@ -1,13 +1,4 @@
-#include "opencv.hpp"
-#include <iostream>
-#include <fstream>
-#include <string.h>
-#include <stdio.h>
-#include "digitTrainer.h"
-
-using namespace std;
-using namespace cv;
-using namespace ml;
+#include "trainer.hpp"
 
 namespace dt{
 
@@ -15,10 +6,10 @@ digitTrainer::digitTrainer()
 {
 	knn = KNearest::create();
 //	trainData = imread("trainData.png");
-//	cvtColor(trainData, trainData, CV_BGR2GRAY);
+//	cvtColor(trainData, trainData, COLOR_BGR2GRAY);
 //	trainData.convertTo(trainData, CV_32FC1);
 //	trainResponces = imread("trainResponces.png");
-//	cvtColor(trainResponces, trainResponces, CV_BGR2GRAY);
+//	cvtColor(trainResponces, trainResponces, COLOR_BGR2GRAY);
 //	trainResponces.convertTo(trainResponces, CV_32FC1);
 }
 
@@ -87,7 +78,7 @@ int digitTrainer::iniTrainer()
 				{cout<<filename<<"	"<<"error"<<endl;
 				return 0;}
 			cout<<filename<<"	";
-			threshold(imgTrain,imgTrain,75,255,CV_THRESH_BINARY);
+			threshold(imgTrain,imgTrain,75,255,THRESH_BINARY);
 			iniTrain_processing(imgTrain,trainData,trainResponces,i);
 		}
 	return 1;
@@ -98,7 +89,7 @@ void digitTrainer::iniTrain_processing(Mat img, Mat &trainData, Mat &trainRespon
 	int num_samples = 17;
 	int digitCounter=0;
 	int j = 0;
-	cvtColor(img,img,CV_BGR2GRAY);
+	cvtColor(img,img,COLOR_BGR2GRAY);
 
 	if (serialNum==2) num_samples=16;
 	while ( j < num_samples ){
@@ -121,7 +112,7 @@ int digitTrainer::folTrainer()
 	char command;
 	//if (addSample.empty())
 	//{
-	cout<<"Ê¹ÓÃ¾µÍ·×¥È¡ÐÂÊý×Ö,°´ÏÂc¼ü×¥È¡"<<endl;
+	cout<<"Ê¹ï¿½Ã¾ï¿½Í·×¥È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½cï¿½ï¿½×¥È¡"<<endl;
 	while (1){
 		VideoCapture cap(0);
 		while (1)
@@ -135,27 +126,27 @@ int digitTrainer::folTrainer()
 			if (waitKey(10) == 'c')
 			{ 
 				imwrite("addSample.jpg", digit);
-				cout << "Êý×Ö×¥È¡³É¹¦" << endl;
+				cout << "ï¿½ï¿½ï¿½ï¿½×¥È¡ï¿½É¹ï¿½" << endl;
 				addSample = imread("addSample.jpg", CV_32FC1);
 				break;
 			}
 			else if (waitKey(10) == 27)
 			{
-				cout<<"È¡Ïû×¥È¡Êý×Ö"<<endl;
+				cout<<"È¡ï¿½ï¿½×¥È¡ï¿½ï¿½ï¿½ï¿½"<<endl;
 				addSample = imread("addSample.jpg",CV_32FC1);
 				break;
 			}
 		}
 		if (addSample.empty())
-			{ cout << "Î´×¥È¡Êý×Ö,ÍË³ö³ÌÐò" << endl; return 0; }
+			{ cout << "Î´×¥È¡ï¿½ï¿½ï¿½ï¿½,ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½" << endl; return 0; }
 		GaussianBlur(addSample, addSample, Size(3, 3), 3);
-		cvtColor(addSample, addSample, CV_BGR2GRAY);
+		cvtColor(addSample, addSample, COLOR_BGR2GRAY);
 		threshold(addSample, addSample, 95, 255, THRESH_BINARY_INV);
 		getROI(addSample);
-		cout << "ÇëÊäÈëÊµ¼ÊÊý×Ö" << endl;
+		cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" << endl;
 		cin >> i;
 		singleTrain(addSample, i);
-		cout << "ÐÂÑù±¾ÒÑÌí¼Ó£¬ÊÇ·ñ¼ÌÐø£¿ Y?N" << endl;
+		cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Y?N" << endl;
 		cin >> command;
 		if (command == 'y' || command == 'Y');
 		else return 0;
@@ -165,7 +156,7 @@ int digitTrainer::folTrainer()
 void digitTrainer::knnTrain(Ptr<ml::KNearest>& knn,Mat& trainData,Mat& trainResponces)
 {
 	knn->train(trainData, ml::ROW_SAMPLE, trainResponces);
-	knn->save("(NewTables)my.xml");
+	knn->save("model.yml");
 }
 
 void digitTrainer::saveTrainer()
@@ -200,7 +191,7 @@ Mat digitTrainer::getDigit(Mat& img)
 	Rect boundRect;
 	Mat img_ = img.clone();
 	Mat digit;
-	cvtColor(img_,img_,CV_BGR2GRAY);
+	cvtColor(img_,img_,COLOR_BGR2GRAY);
 	threshold(img_,img_,threshValve,255,THRESH_BINARY_INV);
 	GaussianBlur(img_,img_,Size(5,5),1,1,4);
 	findContours(img_,img_Contours,RETR_EXTERNAL,CHAIN_APPROX_SIMPLE);

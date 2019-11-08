@@ -1,15 +1,13 @@
-#include "opencv.hpp"
+#include <opencv2/opencv.hpp>
 #include <iostream>
 #include <fstream>
 #include <string.h>
 #include <stdio.h>
-#include "Digit_Finder.h"
+#include "digit_finder.h"
 
 using namespace std;
 using namespace cv;
 using namespace ml;
-
-namespace df{
 
 DigitFinder::DigitFinder(int x, int angle)
 {
@@ -18,7 +16,7 @@ DigitFinder::DigitFinder(int x, int angle)
 	digitX = 0; digitY = 0; digitWidth = 0; digitHeight = 0;
 	predictData = Mat::zeros(1, digitSize*digitSize, CV_32FC1);
 	predictResponce = Mat(1, 1, CV_32FC1);
-	knn = Algorithm::load<KNearest>("(NewTables)my.yaml");
+	knn = Algorithm::load<KNearest>("model.yml");
 }
 
 Point2i DigitFinder::p2i_getDigitLoc()
@@ -72,11 +70,11 @@ bool DigitFinder::b_PrePredict(Mat &img)
 {
 	int digitCounter = 0;
 	vector<vector <Point> > img_Contours;
-	int digitCand[predictNum][2];  //ÓÃÓÚ´æ·ÅËùÓÐ¾­¹ýÉ¸Ñ¡µÄÂÖÀªÔÚÍ¼ÏñÖÐµÄxÖá×ø±ê
+	int digitCand[predictNum][2];  //ï¿½ï¿½ï¿½Ú´ï¿½ï¿½ï¿½ï¿½ï¿½Ð¾ï¿½ï¿½ï¿½É¸Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½Ðµï¿½xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	vector<Rect> boundRect;
 
-	Mat img_ = img.clone();  //±ØÐëcloneµ½ÐÂµÄÈÝÆ÷ÖÐ£¬·ñÔòÔ­Í¼Ïñ»á±»Ç°´¦Àí¸ü¸Ä
-	cvtColor(img_, img_, CV_BGR2GRAY);
+	Mat img_ = img.clone();  //ï¿½ï¿½ï¿½ï¿½cloneï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½Ô­Í¼ï¿½ï¿½á±»Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	cvtColor(img_, img_, COLOR_BGR2GRAY);
 	if (alter == BlacknWhite)
 		threshold(img_, img_, threshValve_BW, 255, THRESH_BINARY_INV);
 	else if (alter == RednBlack)
@@ -84,7 +82,7 @@ bool DigitFinder::b_PrePredict(Mat &img)
 	GaussianBlur(img_, img_, Size(5, 5), 1, 1, 4);
 	findContours(img_, img_Contours, RETR_CCOMP, CHAIN_APPROX_SIMPLE);
 	img_.release();
-	cvtColor(img, img, CV_BGR2HSV);
+	cvtColor(img, img, COLOR_BGR2HSV);
 	for (int i = 0; i<int(img_Contours.size()); i++)
 		if (isDigit(boundingRect(Mat(img_Contours[i])), img))
 		{
@@ -93,11 +91,11 @@ bool DigitFinder::b_PrePredict(Mat &img)
 			digitCand[digitCounter][1] = i;
 			digitCounter++;
 		}
-	cvtColor(img, img, CV_HSV2BGR);
-	if (digitCounter == 0)  //Èç¹ûÃ»ÓÐÊý×Ö£¬·µ»Ø
+	cvtColor(img, img, COLOR_HSV2BGR);
+	if (digitCounter == 0)  //ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½
 		return false;
 
-	//Èç¹ûÓÐ¶à¸öÊý×Ö£¬ÔòÑ¡È¡×î´óµÄ£¬¿¿ÓÒµÄÄÇ¸öÊý×Ö
+	//ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½Ñ¡È¡ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½Òµï¿½ï¿½Ç¸ï¿½ï¿½ï¿½ï¿½ï¿½
 	int loc = 0;
 	for (int j = 0; j<digitCounter; j++) {
 		int tmp = digitCand[0][0];
@@ -123,7 +121,7 @@ bool DigitFinder::b_PrePredict(Mat &img)
 	digitHeight = boundRect[loc].height;
 
 	Mat imgROI = img(Rect(boundRect[loc].x, boundRect[loc].y, boundRect[loc].width, boundRect[loc].height));
-	cvtColor(imgROI, imgROI, CV_BGR2GRAY);
+	cvtColor(imgROI, imgROI, COLOR_BGR2GRAY);
 	if (alter == BlacknWhite) {
 		threshold(imgROI, imgROI, threshValve_BW, 255, THRESH_BINARY_INV);
 		rotateROI(imgROI, angOffset);
@@ -136,7 +134,7 @@ bool DigitFinder::b_PrePredict(Mat &img)
 	if (imgROI.rows>imgROI.cols)
 		copyMakeBorder(imgROI, imgROI, 0, 0, 0, (imgROI.rows - imgROI.cols), 0, Scalar(0, 0, 0));
 	resize(imgROI, imgROI, Size(digitSize, digitSize), 0, 0);
-	//imshow("testtest", imgROI);
+	imshow("testtest", imgROI);
 	for (int k = 0; k<digitSize; k++) {
 		Mat temp_row = imgROI(Rect(0, k, digitSize, 1));
 		temp_row.copyTo(predictData(Rect(k*digitSize, 0, digitSize, 1)));
@@ -158,6 +156,4 @@ int DigitFinder::i_KnnPredict()
 {
 	knn->findNearest(predictData, 12, predictResponce);
 	return predictResponce.at<float>(0);
-}
-
 }

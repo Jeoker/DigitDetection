@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include "opencv.hpp"
+#include <opencv2/opencv.hpp>
 #include <stdio.h>
 
 using namespace std;
@@ -35,9 +35,9 @@ void rotateROI(Mat& imgROI, int angle)
 	warpAffine(imgROI, imgROI, imgROI_rotated, imgROI.size());  
 }
 
-void main()
+int main()
 {
-	char num_serial[] = "123";
+	string num_serial = "123";
 	int angles[] = {-16,-12,-8,-4,0,4,8,12,16};
 	//bitwise_xor(img,Scalar(255,255,255),img);
 	//copyMakeBorder(img,img,1,0,0,0,0,Scalar(255,255,255));
@@ -66,7 +66,7 @@ void main()
 				}
 				l++;
 			}
-			itoa(angles[j],angle,10);
+			sprintf(angle, "%d", angles[j]);
 			filename = filename.substr(0,filename.length()-5);
 			filename = filename + string(angle);
 			filename = filename + ".jpg";

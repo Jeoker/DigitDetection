@@ -1,6 +1,6 @@
-#include "opencv.hpp"
+#include <opencv2/opencv.hpp>
 #include <iostream>
-#include "Digit_Finder.h"
+#include "digit_finder.h"
 
 using namespace std;
 using namespace cv;
@@ -19,7 +19,7 @@ bool b_GetSequence(int& confirmedDigit, int& verifyCounter, int& predictResult, 
 		else if (confirmedDigit != predictResult)
 		{
 			if (ds == 10)
-				{ cout << "10¸öÊý×ÖÒÑ¶ÁÈ¡Íê±Ï£¬ÎÞ·¨¼ÓÈë¸ü¶àÊý×Ö" << endl; return false; }
+				{ cout << "10ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¶ï¿½È¡ï¿½ï¿½Ï£ï¿½ï¿½Þ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" << endl; return false; }
 			else
 				{ confirmedDigit = predictResult; digitSequence[ds++] = confirmedDigit; }
 		}
@@ -47,7 +47,7 @@ int main()
 		//rectangle(src, Point(119, 9), Point(501, 471), Scalar(0, 0, 255), 1, 8, 0);
 		//srcROI = src(Rect(140, 100, 340, 290));
 		srcROI = src(Rect(120, 10, 380, 460));
-		//Èç¹ûÊ¶±ðºÚµ×ºì×ÖµÄµç×ÓÆÁ£¬ÔòÏÈ¶ÔÍ¼Ïñ½øÐÐ·´É«´¦Àí£¬·ñÔòÎÞ·¨ÕýÈ·»ñµÃÊý×ÖÂÖÀª
+		//ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½Úµ×ºï¿½ï¿½ÖµÄµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¶ï¿½Í¼ï¿½ï¿½ï¿½ï¿½Ð·ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ·ï¿½ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if (alter == 0)
 		{
 			for (int i = 0; i<460; i++)
@@ -61,12 +61,12 @@ int main()
 				}
 			}
 		}
-		if (digitFinder.b_PrePredict(srcROI))  //Ê¶±ðÊ±£¬ÎªÌá¸ßÊ¶±ð×¼È·ÐÔ£¬Èý´ÎÊ¶±ð³öÍ¬ÑùµÄ½á¹û²Å±»½ÓÊÜ
+		if (digitFinder.b_PrePredict(srcROI))  //Ê¶ï¿½ï¿½Ê±ï¿½ï¿½Îªï¿½ï¿½ï¿½Ê¶ï¿½ï¿½×¼È·ï¿½Ô£ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½ï¿½Í¬ï¿½ï¿½ï¿½Ä½ï¿½ï¿½ï¿½Å±ï¿½ï¿½ï¿½ï¿½ï¿½
 		{
 			predictResult = digitFinder.i_KnnPredict();
 			if (predictResult == lastRecult)
 			{
-				if (!b_GetSequence(confirmedDigit, ++verifyCounter, predictResult, ds, digitSequence))  //¸Ãº¯ÊýÖÐÉè¶¨ÁËÊ¶±ðÊýÁ¿ÉÏÏÞ£¬È¥Äê±ÈÈüÎª10¸öÊý×Ö
+				if (!b_GetSequence(confirmedDigit, ++verifyCounter, predictResult, ds, digitSequence))  //ï¿½Ãºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½è¶¨ï¿½ï¿½Ê¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ£ï¿½È¥ï¿½ï¿½ï¿½ï¿½ï¿½Îª10ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					break;
 			}
 			else
@@ -79,6 +79,6 @@ int main()
 	}
 	for (int i = 0; i < 10; i++)
 		cout << digitSequence[i] << '\t';
-	system("pause");
+	cout << endl;
 	return 0;
 }

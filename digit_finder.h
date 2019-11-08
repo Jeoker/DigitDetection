@@ -5,13 +5,13 @@ using namespace std;
 using namespace cv;
 using namespace ml;
 
-class df::DigitFinder
+class DigitFinder
 {
 private:
-	static const int RednBlack = 0;  //µç×ÓºìºÚÆÁÐòºÅ
-	static const int BlacknWhite = 1;//°×µ×ºÚ×ÖÊý×ÖÐòºÅ
-	static const int threshValve_BW = 110;  //°×µ×ºÚ×ÖÑÕÉ«¹ýÂË·§
-	static const int threshValve_RB = 120;  //µç×ÓÆÁÑÕÉ«¹ýÂË·§
+	static const int RednBlack = 0;  //ï¿½ï¿½ï¿½Óºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	static const int BlacknWhite = 1;//ï¿½×µ×ºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	static const int threshValve_BW = 110;  //ï¿½×µ×ºï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½Ë·ï¿½
+	static const int threshValve_RB = 120;  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½Ë·ï¿½
 	static const int boundSaturationValve_BW = 50;
 	static const int boundValueValve_BW = 200;
 	static const int boundSaturationValve_RB = 100;
@@ -27,12 +27,12 @@ private:
 	Ptr<ml::KNearest>  knn;
 
 public:
-	df::DigitFinder(int x, int angle);
-	Point2i df::p2i_getDigitLoc();
-	void df::rotateROI(Mat& imgROI, int angle);
-	bool df::isDigit(Rect boundRect, Mat& img);
-	bool df::b_PrePredict(Mat &img);
-	int df::i_KnnPredict();
+	DigitFinder(int x, int angle);
+	Point2i p2i_getDigitLoc();
+	void rotateROI(Mat& imgROI, int angle);
+	bool isDigit(Rect boundRect, Mat& img);
+	bool b_PrePredict(Mat &img);
+	int i_KnnPredict();
 };
 
 #endif

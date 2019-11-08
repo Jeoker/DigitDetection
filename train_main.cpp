@@ -1,9 +1,9 @@
-#include "opencv.hpp"
+#include <opencv2/opencv.hpp>
 #include <iostream>
 #include <fstream>
 #include <string.h>
 #include <stdio.h>
-#include "digitTrainer.h"
+#include "trainer.hpp"
 
 using namespace std;
 using namespace cv;
