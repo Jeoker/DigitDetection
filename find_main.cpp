@@ -13,7 +13,8 @@ bool b_GetSequence(int& confirmedDigit, int& verifyCounter, int& predictResult, 
 	else if (alter == 1) confirmCounter = 8;
 	if (verifyCounter >= confirmCounter)
 	{
-		cout << predictResult << '\t';
+		// cout << predictResult << '\t';
+		printf("%d\t", predictResult);
 		if (confirmedDigit == -1)
 			{ confirmedDigit = predictResult; digitSequence[ds++] = confirmedDigit; }
 		else if (confirmedDigit != predictResult)
